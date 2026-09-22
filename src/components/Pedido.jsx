@@ -3,10 +3,10 @@ import { useState } from 'react'
 
 // ARRAY DE OBJETOS CONTENDO O ESTADO INICIAL DO CARDAPIO
 const cardapio = [
-    {id:1,nome:"Combo-01",preço:25.00,disponivel: false,quantidade: 0},
-    {id:2,nome:"Combo-02",preço:35.00,disponivel: true,quantidade: 0},
-    {id:3,nome:"Combo-03",preço:45.00,disponivel: false,quantidade: 0},
-    {id:4,nome:"Combo-04",preço:55.00,disponivel: true,quantidade: 0},
+    {id:1,nome:"Combo-01",preco:25.00,disponivel: false,quantidade: 0},
+    {id:2,nome:"Combo-02",preco:35.00,disponivel: true,quantidade: 0},
+    {id:3,nome:"Combo-03",preco:45.00,disponivel: false,quantidade: 0},
+    {id:4,nome:"Combo-04",preco:55.00,disponivel: true,quantidade: 0},
 ];
 const Pedido = () => {
 
@@ -26,14 +26,14 @@ const Pedido = () => {
             // spread (...item) - mantem os valores antigos e adiciona os novos
             // Math.max: objeto que garante que a quantidade nunca sera maior que 0
             alt.map(item=>
-                item.id === 0 ? {...item,quantidade:Math.max(0,item.quantidade+valor)} : item 
+                item.id === id ? {...item,quantidade:Math.max(0,item.quantidade+valor)} : item 
                                 // {spread}
             )
         )
     }
 
     // FILTER: Seleciona apenas os produtos disponiveis no carrinho
-    const constDisponiveis = items.filter(item=> item.disponivel);
+    const produtosDisponiveis = items.filter(item=> item.disponivel);
     const carrinho = items.filter(item=>item.quantidade>0);
 
     // REDUCE: Calcula soma dos items (preco*quantidade)
@@ -58,7 +58,66 @@ const Pedido = () => {
 
   return (
     <div>
-      
+        <div>
+            <h2>Cardápio do Restaurante</h2>
+
+            <div>
+                {produtosDisponiveis.map(produto=>(
+                    <div key={produto.id}>
+                        <span>{produto.nome} - R$ {produto.preco.toFixed(2)}</span>
+                        <div>
+                            <button onClick={()=>alterarQuantidade(produto.id,-1)}>-</button>
+                            <span>{produto.quantidade}</span>
+                            <button onClick={()=>alterarQuantidade(produto.id,+1)}>+</button>
+                        </div>
+
+                        <hr />
+                        <div>
+                            <h3>Resumo da Entrega</h3>
+                            {carrinho.length === 0 ? (
+                                <p>Seu Carrinho está Vazio</p>
+                            ):(
+                                <ul>
+                                    {carrinho.map(item=>(
+                                        <li key={item.id}>
+                                            <span>{item.quantidade} X {item.nome}</span>
+                                            <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+
+                                        </li>
+                                    ))}
+
+                                    <div>
+                                        <div>
+                                            <span>SubTotal: </span>
+                                            <span>R$ {subTotal.toFixed(2)}</span>
+                                        </div>
+                                        <div>
+                                            <span>Taxa de Entrega</span>
+                                            <span>R$ {taxaEntrega.toFixed(2)}</span>
+                                        </div>
+                                        <div>
+                                            <span>Total</span>
+                                            <span>R${total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                    <button onClick={ConfirmarPedido}>
+                                        {enviar ? "Enviando": "Confirmar Pedido"}
+                                    </button>
+                                </ul>
+
+                            )}
+                        </div>
+                        {status && (
+                            <div>
+                                <strong>Alerta:</strong> {status}
+                            </div>
+                        )}
+                    </div> 
+
+                    
+                ))}
+            </div>
+        </div>
     </div>
   )
 }
