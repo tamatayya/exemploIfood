@@ -70,21 +70,26 @@ const Pedido = () => {
                             <span>{produto.quantidade}</span>
                             <button onClick={()=>alterarQuantidade(produto.id,+1)}>+</button>
                         </div>
+                    </div>
+                ))}
 
-                        <hr />
+                        <hr/>
                         <div>
                             <h3>Resumo da Entrega</h3>
                             {carrinho.length === 0 ? (
                                 <p>Seu Carrinho está Vazio</p>
                             ):(
-                                <ul>
-                                    {carrinho.map(item=>(
-                                        <li key={item.id}>
-                                            <span>{item.quantidade} X {item.nome}</span>
-                                            <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
+                                <div>
+                                    
+                                    <ul>
+                                        {carrinho.map(item=>(
+                                            <li key={item.id}>
+                                                <span>{item.quantidade} X {item.nome}</span>
+                                                <span>R$ {(item.preco * item.quantidade).toFixed(2)}</span>
 
-                                        </li>
-                                    ))}
+                                            </li>
+                                        ))}
+                                    </ul>
 
                                     <div>
                                         <div>
@@ -103,7 +108,9 @@ const Pedido = () => {
                                     <button onClick={ConfirmarPedido}>
                                         {enviar ? "Enviando": "Confirmar Pedido"}
                                     </button>
-                                </ul>
+                                
+                                </div>
+                                
 
                             )}
                         </div>
@@ -115,10 +122,9 @@ const Pedido = () => {
                     </div> 
 
                     
-                ))}
+                
             </div>
         </div>
-    </div>
   )
 }
 
